@@ -27,32 +27,32 @@ def change_temp(temp, mini, maxi, delta):
 def run(coll, device):
     docs = []
 
-    for j in range(days):
-        current_date = start_date + timedelta(days=j)
+    for day in range(days):
+        current_date = start_date + timedelta(days=day)
         temp = random.randint(17, 23)
-        for _ in range(24):
+        for hour in range(24):
             missed = random.randint(0, 3)  # simulates missing measures
 
-            values = []
+            measures = []
             temperatures_list = []
-            for i in range(60 - missed):
-                values.append({"measureMinute": i, "measuredValue": round(float(temp), 2)})
+            for minute in range(60 - missed):
+                measures.append({"minute": minute, "value": round(float(temp), 2)})
                 temperatures_list.append(temp)
                 temp = change_temp(temp, 13, 29, 5)
 
             docs.append({
-                "id": device,
-                "measureDate": current_date + timedelta(hours=i),
-                "measureUnit": "°C",
-                "periodAvg": round(statistics.mean(temperatures_list), 2),
-                "periodMax": round(float(max(temperatures_list)), 2),
-                "periodMin": round(float(min(temperatures_list)), 2),
-                "missedMeasures": missed,
-                "recordedMeasures": 60 - missed,
-                "values": values
+                "device": device,
+                "date": current_date + timedelta(hours=hour),
+                "unit": "°C",
+                "avg": round(statistics.mean(temperatures_list), 2),
+                "max": round(float(max(temperatures_list)), 2),
+                "min": round(float(min(temperatures_list)), 2),
+                "missed_measures": missed,
+                "recorded_measures": 60 - missed,
+                "measures": measures
             })
-    print('Inserting', len(docs), 'docs for device:', device)
     coll.insert_many(docs)
+    print('Inserted', len(docs), 'docs for device:', device)
 
 
 if __name__ == '__main__':
