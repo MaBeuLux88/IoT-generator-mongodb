@@ -68,3 +68,5 @@ if __name__ == '__main__':
 
     for d in device_list:
         run(iot, d)
+
+    iot.create_index('date')
