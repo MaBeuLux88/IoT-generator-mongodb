@@ -51,7 +51,8 @@ python3 importiot.py "mongodb+srv://user:password@replicasetFQDN/test"
 ## Result
 
 The script will create a collection called `world.iot` with up to 60 measures per hour per device (so 24 documents per device per day):
-```
+
+```json
 {
 	"_id" : ObjectId("5ebc936378eac4871e4325e1"),
 	"device" : "PTA101",
