@@ -5,6 +5,7 @@ import datetime
 import random
 import statistics
 import sys
+import time
 from _datetime import timedelta
 
 from pymongo import MongoClient, WriteConcern
@@ -25,6 +26,7 @@ def change_temp(temp, mini, maxi, delta):
 
 
 def run(coll, device):
+    start_gen = time.time()
     docs = []
 
     for day in range(days):
@@ -51,8 +53,9 @@ def run(coll, device):
                 "recorded_measures": 60 - missed,
                 "measures": measures
             })
+    start_insert = time.time()
     coll.insert_many(docs)
-    print('Inserted', len(docs), 'docs for device:', device)
+    print('Inserted', len(docs), 'docs for device', device, '- generated in', round(start_insert - start_gen, 2), 's', '- inserted in', round(time.time() - start_insert, 2), 's')
 
 
 if __name__ == '__main__':
